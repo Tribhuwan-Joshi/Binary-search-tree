@@ -25,6 +25,17 @@ class BST {
     return rootNode;
   }
 
+  insert(val, root = this.root) {
+    if (this.arr.includes(val)) return;
+    if (root == null) {
+      let node = new Node(val);
+      return node;
+    }
+    if (root.value > val) root.left = this.insert(val, root.left);
+    else root.right = this.insert(val, root.right);
+    return root;
+  }
+
   delete(val) {
     // delete node
   }
@@ -80,7 +91,9 @@ function randomArray(n, min = 1, max = 20) {
   return arr;
 }
 
-let rArr = randomArray(7);
+let rArr = [11,23,45,67,43];
 let bst = new BST(rArr);
-bst.insert(3);
+
+prettyPrint(bst.root);
+bst.insert(11);
 prettyPrint(bst.root);
