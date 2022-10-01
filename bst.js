@@ -1,72 +1,3 @@
-class Node {
-  constructor(value) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
-  }
-}
-
-class BST {
-  constructor(arr) {
-    arr = [...new Set(arr)];
-    arr.sort((a, b) => a - b);
-
-    this.arr = arr;
-
-    this.root = this.#buildTree(arr, 0, this.arr.length - 1);
-  }
-  #buildTree(arr, start, end) {
-    if (start > end) return null;
-
-    let mid = Math.floor((start + end) / 2);
-    let rootNode = new Node(arr[mid]);
-    rootNode.left = this.#buildTree(arr, start, mid - 1);
-    rootNode.right = this.#buildTree(arr, mid + 1, end);
-    return rootNode;
-  }
-
-  insert(val, root = this.root) {
-    if (this.arr.includes(val)) return;
-    if (root == null) {
-      let node = new Node(val);
-      return node;
-    }
-    if (root.value > val) root.left = this.insert(val, root.left);
-    else root.right = this.insert(val, root.right);
-    return root;
-  }
-
-  delete(val) {
-    // delete node
-  }
-  find(val) {
-    // return the node with given value
-  }
-  levelOrder(fun) {
-    // return value if no fun is given
-  }
-  inOrder(fun) {
-    // yeild each node to provided function
-    // else return an array of values
-  }
-  preorder(fun) {
-    // yeild each node to provided function
-    // else return an array of values
-  }
-  height(node) {
-    // return the height of the node - node to leaf node
-  }
-  depth(node) {
-    // return depth of the node - from root to node
-  }
-  isBalanced() {
-    // check if the tree is balanced
-  }
-  rebalance() {
-    // rebalance a unbalance tree
-  }
-}
-
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node.right !== null) {
     prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
@@ -77,23 +8,67 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-function randomArray(n, min = 1, max = 20) {
-  let arr = [];
-
-  while (n) {
-    let x = Math.floor(Math.random() * (max - min)) + min;
-
-    if (!arr.includes(x)) {
-      arr.push(x);
-      n--;
-    }
+class Node {
+  constructor(val) {
+    this.value = val;
+    this.left = null;
+    this.right = null;
   }
-  return arr;
 }
 
-let rArr = [11,23,45,67,43];
-let bst = new BST(rArr);
+class BST {
+  constructor(arr = []) {
+    arr = [...new Set(arr)];
+    arr.sort((a, b) => a - b);
+    this.arr = arr;
+    this.root = this.#buildTree(this.arr, 0, this.arr.length - 1);
+  }
+  #buildTree(arr, low, end) {
+    if (low > end) return null;
+    let mid = Math.floor((low + end) / 2);
+    let node = new Node(arr[mid]);
+    node.left = this.#buildTree(arr, low, mid - 1);
+    node.right = this.#buildTree(arr, mid + 1, end);
+    return node;
+  }
+  insert(val, root = this.root) {
+    if (this.arr.includes(val)) return;
+    if (root == null) return new Node(val);
+    if (val > root.value) root.right = this.insert(val, root.right);
+    else root.left = this.insert(val, root.left);
+    return root;
+  }
+  #findMin(root) {
+    while (root.left) {
+      root = root.left;
+    }
+    return root;
+  }
+  delete(val, root = this.root) {
+    if (root == null) return ;
+    if (val > root.value) root.right = this.delete(val, root.right);
+    else if (val < root.value) root.left = this.delete(val, root.left);
+    else {
+      if (root.left == null) {
+        let temp = root.right;
+        root = null;
+        return temp;
+      } else if (root.right == null) {
+        let temp = root.left;
+        root = null;
+        return temp;
+      }
+      let temp = this.#findMin(root.right);
+      root.value = temp.value;
+      root.right = this.delete(temp.value, root.right);
+    }
+    return root;
+  }
+}
 
+let bst = new BST([1, 2, 45, 2, 12, 3]);
 prettyPrint(bst.root);
-bst.insert(11);
+bst.insert(10);
+prettyPrint(bst.root);
+bst.delete(3);
 prettyPrint(bst.root);
