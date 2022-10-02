@@ -71,7 +71,21 @@ class BST {
     if (root.value > val) return this.find(val, root.left);
     else return this.find(val, root.right);
   }
-}
+  levelOrder(root = this.root) {
+    if (root == null) return;
+    let q = [];
+    q.push(root);
+    while (q.length) {
+      let node = q[0];
+      console.log(node.value);
+      if (node.left) q.push(node.left);
+      if (node.right) q.push(node.right);
+      q.shift();
+      
+    }
+  }
+
+
 
 function randomArr() {
   let arr = [];
@@ -88,4 +102,4 @@ function randomArr() {
 
 let bst = new BST([1, 234, 232, 42, 11, 45, 25]);
 prettyPrint(bst.root);
-console.log(bst.find(11));
+bst.inorder();
