@@ -141,6 +141,12 @@ class BST {
       Math.abs(this.#height(root.left) - this.#height(root.right)) < 2
     );
   }
+  rebalance(root = this.root) {
+    if (this.isBalanced()) return
+    this.inorderArr = []
+    this.inorder();
+    this.root = this.#buildTree(this.inorderArr,0,this.inorderArr.length-1);
+  }
 }
 
 function randomArr() {
@@ -157,5 +163,9 @@ function randomArr() {
 }
 
 let bst = new BST([1, 234, 232, 42, 11, 45]);
-prettyPrint(bst.root);
+bst.insert(11111);
+bst.insert(1234567);
+bst.insert(987123);
 console.log(bst.isBalanced());
+bst.rebalance();
+console.log(bst.isBalanced())
