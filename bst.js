@@ -107,22 +107,30 @@ class BST {
     this.postOrder(root.right);
     this.postOrderArr.push(root.value);
   }
-  #height(node=this.root) {
+  #height(node = this.root) {
     if (node == null) return -1;
     let leftHeight = this.#height(node.left);
     let righHeight = this.#height(node.right);
     return Math.max(leftHeight, righHeight) + 1;
   }
+  depth(val = null, node = this.root) {
+    if (val) node = this.find(val);
+    if (node == null || node == this.root) return 0;
+    let count = 0;
+    let current = this.root;
+    while (current != node) {
+      count++;
+      if (current.value > node.value) current = current.left;
+      if (current.value < node.value) current = current.right;
+    }
+    return count;
+  }
   getheight(val = null, root = this.root) {
-    if(!val)  return this.#height(root);
+    // you can pass the value of find it's height else it will find the height of whole tree
+    if (!val) return this.#height(root);
     let node = this.find(val);
     return this.#height(node);
-   
-    
   }
-  
-
-
 }
 
 function randomArr() {
@@ -140,4 +148,4 @@ function randomArr() {
 
 let bst = new BST([1, 234, 232, 42, 11, 45, 25]);
 prettyPrint(bst.root);
-console.log(bst.getheight(1));
+
