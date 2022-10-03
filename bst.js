@@ -14,9 +14,7 @@ class Node {
     this.value = val;
     this.left = null;
     this.right = null;
-    this.inorderArr = [];
-    this.preOrderArr = [];
-    this.postOrderArr = [];
+   
   }
 }
 
@@ -26,6 +24,9 @@ class BST {
     arr.sort((a, b) => a - b);
     this.arr = arr;
     this.root = this.#buildTree(this.arr, 0, this.arr.length - 1);
+     this.inorderArr = [];
+     this.preOrderArr = [];
+     this.postOrderArr = [];
   }
 
   #buildTree(arr, low, end) {
@@ -142,10 +143,10 @@ class BST {
     );
   }
   rebalance(root = this.root) {
-    if (this.isBalanced()) return
-    this.inorderArr = []
+    if (this.isBalanced()) return;
+    this.inorderArr = [];
     this.inorder();
-    this.root = this.#buildTree(this.inorderArr,0,this.inorderArr.length-1);
+    this.root = this.#buildTree(this.inorderArr, 0, this.inorderArr.length - 1);
   }
 }
 
@@ -162,10 +163,28 @@ function randomArr() {
   return arr;
 }
 
-let bst = new BST([1, 234, 232, 42, 11, 45]);
-bst.insert(11111);
-bst.insert(1234567);
-bst.insert(987123);
-console.log(bst.isBalanced());
-bst.rebalance();
-console.log(bst.isBalanced())
+function driver() {
+  let bst = new BST(randomArr());
+ 
+  console.log(bst.isBalanced());
+  bst.inorder();
+  bst.preOrder();
+  bst.postOrder();
+  console.log("PreOrder ", bst.preOrderArr);
+  console.log("Inorder ", bst.inorderArr);
+  console.log("PostOrder ", bst.postOrderArr);
+  bst.insert(1000);
+  bst.insert(12345);
+  bst.insert(200);
+  console.log(bst.isBalanced());
+  bst.rebalance();
+  console.log(bst.isBalanced());
+  bst.inorder();
+  bst.preOrder();
+  bst.postOrder();
+  console.log("PreOrder ", bst.preOrderArr);
+  console.log("Inorder ", bst.inorderArr);
+  console.log("PostOrder ", bst.postOrderArr);
+}
+
+driver();
