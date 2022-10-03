@@ -131,6 +131,16 @@ class BST {
     let node = this.find(val);
     return this.#height(node);
   }
+  isBalanced(root = this.root) {
+    if (root === null) {
+      return true;
+    }
+    return (
+      this.isBalanced(root.left) &&
+      this.isBalanced(root.right) &&
+      Math.abs(this.#height(root.left) - this.#height(root.right)) < 2
+    );
+  }
 }
 
 function randomArr() {
@@ -146,6 +156,6 @@ function randomArr() {
   return arr;
 }
 
-let bst = new BST([1, 234, 232, 42, 11, 45, 25]);
+let bst = new BST([1, 234, 232, 42, 11, 45]);
 prettyPrint(bst.root);
-
+console.log(bst.isBalanced());
