@@ -14,6 +14,9 @@ class Node {
     this.value = val;
     this.left = null;
     this.right = null;
+    this.inorderArr = [];
+    this.preOrderArr = [];
+    this.postOrderArr = [];
   }
 }
 
@@ -72,20 +75,55 @@ class BST {
     else return this.find(val, root.right);
   }
   levelOrder(root = this.root) {
+    let res = [];
     if (root == null) return;
     let q = [];
     q.push(root);
     while (q.length) {
       let node = q[0];
-      console.log(node.value);
+      res.push(node.value);
       if (node.left) q.push(node.left);
       if (node.right) q.push(node.right);
       q.shift();
-      
     }
   }
+  inorder(root = this.root) {
+    if (root == null) return;
+    this.inorder(root.left);
+    this.inorderArr.push(root.value);
+    this.inorder(root.right);
+  }
+
+  preOrder(root = this.root) {
+    if (root == null) return;
+    this.preOrderArr.push(root.value);
+    this.preOrder(root.left);
+    this.preOrder(root.right);
+  }
+
+  postOrder(root = this.root) {
+    if (root == null) return;
+    this.postOrder(root.left);
+    this.postOrder(root.right);
+    this.postOrderArr.push(root.value);
+  }
+  #height(node=this.root) {
+    if (node == null) return -1;
+    let leftHeight = this.#height(node.left);
+    let righHeight = this.#height(node.right);
+    return Math.max(leftHeight, righHeight) + 1;
+  }
+  getheight(val = null, root = this.root) {
+    if(!val)  return this.#height(root);
+    let node = this.find(val);
+    return this.#height(node);
+   
+    
+  }
+  
 
 
+}
 
 function randomArr() {
   let arr = [];
@@ -102,4 +140,4 @@ function randomArr() {
 
 let bst = new BST([1, 234, 232, 42, 11, 45, 25]);
 prettyPrint(bst.root);
-bst.inorder();
+console.log(bst.getheight(1));
